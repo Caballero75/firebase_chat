@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "firebase_chat",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "firebase_chat (Flutter)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
