@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatelessWidget {
   // const ChatScreen({Key key}) : super(key: key);
-
+  final String chatId = "gtfjta1UXYDDCjCPDKF9";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: StreamBuilder(
           stream: Firestore.instance
-              .collection("/chats/gtfjta1UXYDDCjCPDKF9/messages")
+              .collection("/chats/$chatId/messages")
               .snapshots(),
           builder: (ctx, streamSnapshot) {
             if (streamSnapshot.connectionState == ConnectionState.waiting) {
@@ -32,7 +32,7 @@ class ChatScreen extends StatelessWidget {
         child: Icon(Icons.add),
         onPressed: () {
           Firestore.instance
-              .collection("/chats/gtfjta1UXYDDCjCPDKF9/messages")
+              .collection("/chats/$chatId/messages")
               .add({'text': "teste"});
         },
       ),
