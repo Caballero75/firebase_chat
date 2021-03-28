@@ -30,7 +30,8 @@
         "**/pubspec.yaml": false,
         "**/.firebaserc": true,
         "**/firebase.json": true,
-        "**/.firebase": true
+        "**/.firebase": true,
+        "**/.github": true
     },
     "explorerExclude.backup": null,
     "dart.flutterHotReloadOnSave": "never"

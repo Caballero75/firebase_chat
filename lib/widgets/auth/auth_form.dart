@@ -57,6 +57,8 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin)
                     CircleAvatar(
                       radius: 40,
+                      child: Image.network(
+                          "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1268&q=80"),
                     ),
                   TextFormField(
                     key: ValueKey("email"),
