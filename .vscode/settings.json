@@ -25,9 +25,12 @@
         "**/.vscode": true,
         "**/windows": true,
         "**/build": true,
-        "**/web": false,
+        "**/web": true,
         "**/urls.txt": false,
-        "**/pubspec.yaml": false
+        "**/pubspec.yaml": false,
+        "**/.firebaserc": true,
+        "**/firebase.json": true,
+        "**/.firebase": true
     },
     "explorerExclude.backup": null,
     "dart.flutterHotReloadOnSave": "never"
