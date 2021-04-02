@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'package:firebase_chat/widgets/pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -5,12 +7,13 @@ class AuthForm extends StatefulWidget {
     this.submitFn,
     this.isLoading,
   );
-
   final bool isLoading;
   final void Function(
     String email,
     String username,
     String password,
+    Uint8List bytes,
+    String mimeType,
     bool isLogin,
   ) submitFn;
 
@@ -24,17 +27,34 @@ class _AuthFormState extends State<AuthForm> {
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
+  Uint8List _bytes;
+  String _mimeType;
+
+  void _bytesFn(Uint8List bytes, String mimeType) {
+    _bytes = bytes;
+    _mimeType = mimeType;
+  }
 
   void _trySubmit() {
     final _isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
-
+    // print(_bytes);
+    if (_bytes == null && !_isLogin) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Center(child: Text("Selecione uma imagem")),
+        ),
+      );
+      return;
+    }
     if (_isValid) {
       _formKey.currentState.save();
       widget.submitFn(
         _userEmail.trim(),
         _userName.trim(),
         _userPassword.trim(),
+        _bytes,
+        _mimeType,
         _isLogin,
       );
     }
@@ -54,12 +74,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!_isLogin)
-                    CircleAvatar(
-                      radius: 40,
-                      child: Image.network(
-                          "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1268&q=80"),
-                    ),
+                  if (!_isLogin) UserImagePicker(imgPickFn: _bytesFn),
                   TextFormField(
                     key: ValueKey("email"),
                     validator: (value) {
@@ -105,13 +120,15 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(height: 12),
                   if (widget.isLoading) CircularProgressIndicator(),
                   if (!widget.isLoading)
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text(_isLogin ? "Entrar" : "Criar Conta"),
                       onPressed: _trySubmit,
                     ),
                   if (!widget.isLoading)
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Theme.of(context).primaryColor,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isLogin = !_isLogin;

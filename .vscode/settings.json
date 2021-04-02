@@ -26,7 +26,7 @@
         "**/windows": true,
         "**/build": true,
         "**/web": true,
-        "**/urls.txt": false,
+        "**/urls.txt": true,
         "**/pubspec.yaml": false,
         "**/.firebaserc": true,
         "**/firebase.json": true,

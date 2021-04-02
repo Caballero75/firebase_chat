@@ -1,6 +1,8 @@
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/widgets/auth/auth_form.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,9 +19,11 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String userName,
     String password,
+    Uint8List bytes,
+    String mimeType,
     bool isLogin,
   ) async {
-    AuthResult authResult;
+    UserCredential authResult;
     try {
       setState(() {
         _isLoading = true;
@@ -34,10 +38,18 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
-        await Firestore.instance
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child("user_images")
+            .child(authResult.user.uid + '.' + mimeType);
+
+        await ref.putData(bytes).whenComplete(() => null);
+
+        await FirebaseFirestore.instance
             .collection("users")
-            .document(authResult.user.uid)
-            .setData({
+            .doc(authResult.user.uid)
+            .set({
           'username': userName,
           'email': email,
         });
@@ -51,12 +63,13 @@ class _AuthScreenState extends State<AuthScreen> {
       if (e.message != null) {
         message = e.message;
       }
-      print(message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           elevation: 20,
           duration: Duration(seconds: 5),
-          content: Text(message),
+          content: Center(
+            child: Text("Teste  " + message),
+          ),
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
@@ -64,12 +77,16 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
-      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           elevation: 20,
           duration: Duration(seconds: 5),
-          content: Text(e.toString()),
+          content: Center(
+            child: Text(
+              "ERRO!!!!! " + e.toString(),
+              style: TextStyle(fontSize: 30),
+            ),
+          ),
           backgroundColor: Theme.of(context).errorColor,
         ),
       );
