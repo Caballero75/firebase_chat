@@ -23,14 +23,14 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  var _isLogin = true;
+  bool _isLogin = true;
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
   Uint8List _bytes;
   String _mimeType;
 
-  void _bytesFn(Uint8List bytes, String mimeType) {
+  void _imagePickFn(Uint8List bytes, String mimeType) {
     _bytes = bytes;
     _mimeType = mimeType;
   }
@@ -63,18 +63,17 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
       child: Center(
         child: Card(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.all(12),
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(12),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!_isLogin) UserImagePicker(imgPickFn: _bytesFn),
+                  if (!_isLogin) UserImagePicker(imgPickFn: _imagePickFn),
                   TextFormField(
                     key: ValueKey("email"),
                     validator: (value) {

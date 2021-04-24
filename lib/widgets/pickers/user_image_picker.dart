@@ -18,14 +18,16 @@ class UserImagePicker extends StatefulWidget {
 
 class _UserImagePickerState extends State<UserImagePicker> {
   Uint8List _pickedImage;
-  String mimeType;
+  String _mimeType;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final ImageSource imageSource = ImageSource.camera;
+    final ImageSource imageSource = ImageSource.gallery;
     final pickedImageFile = await picker.getImage(
       source: imageSource,
       preferredCameraDevice: CameraDevice.rear,
+      imageQuality: 50,
+      maxWidth: 150,
     );
     // final pickedImage = Image.network(pickedImageFile.path);
     // final Image image = Image.memory(await pickedImageFile.readAsBytes());
@@ -36,30 +38,30 @@ class _UserImagePickerState extends State<UserImagePicker> {
     switch (mime) {
       case "image/png":
         {
-          mimeType = "png";
+          _mimeType = "png";
         }
         break;
       case "image/gif":
         {
-          mimeType = "gif";
+          _mimeType = "gif";
         }
         break;
       case "image/jpeg":
         {
-          mimeType = "jpg";
+          _mimeType = "jpg";
         }
         break;
       default:
         {
-          mimeType = null;
+          _mimeType = null;
         }
         break;
     }
-    if (mimeType != null) {
+    if (_mimeType != null) {
       setState(() {
         _pickedImage = bytes;
       });
-      widget.imgPickFn(bytes, mimeType);
+      widget.imgPickFn(bytes, _mimeType);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

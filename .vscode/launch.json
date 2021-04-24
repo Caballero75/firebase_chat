@@ -1,12 +1,17 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "name": " ",
+            "name": "Chat",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
-        }
+            "args": [
+                "--web-port=7654",
+                // "--web-hostname=localhost",
+            ]
+        },
     ]
 }
+// http: //localhost:1234/
+// "--web-run-headless"
